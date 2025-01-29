@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#f7fcf5", "id": "ip_0", "label": "185.175.0.3", "shape": "dot", "size": 20, "title": "[\u0027185.175.0.3\u0027]\n anomaly_score: 9.679311518961953e-11"}, {"color": "#f7fcf5", "id": "ip_1", "label": "185.175.0.8", "shape": "dot", "size": 20, "title": "[\u0027185.175.0.8\u0027]\n anomaly_score: 1.3387503605688522e-10"}, {"color": "#f7fcf5", "id": "ip_2", "label": "185.175.0.5", "shape": "dot", "size": 20, "title": "[\u0027185.175.0.5\u0027]\n anomaly_score: 3.775756096668914e-11"}, {"color": "#f7fcf5", "id": "ip_3", "label": "185.175.0.4", "shape": "dot", "size": 20, "title": "[\u0027185.175.0.4\u0027]\n anomaly_score: 1.41502559669604e-10"}, {"color": "#fb6b4b", "id": "ip_4", "label": "185.175.0.7", "shape": "dot", "size": 20, "title": "[\u0027185.175.0.7\u0027]\n anomaly_score: 0.6411406993865967"}, {"color": "#f7fcf5", "id": "pkt_0", "label": "pkt 0", "shape": "dot", "size": 10, "title": "func____________________READ_HOLDING_REGISTERS\nevent_type___________________RESPONSED_REQUEST\nrequest.address____________________________8.0\nrequest.quantity___________________________1.0\nrequest.count_value________________________NaN\nrequest.bool_value_________________________NaN\nresponse.address___________________________NaN\nresponse.quantity__________________________1.0\nresponse.count_value_______________________NaN\nresponse.bool_value________________________NaN\nid.orig_h__________________________185.175.0.3\n\n anomaly_score: 1.288097628560081e-09"}, {"color": "#f7fcf5", "id": "pkt_1", "label": "pkt 1", "shape": "dot", "size": 10, "title": "func____________________READ_INPUT_REGISTERS\nevent_type_________________RESPONSED_REQUEST\nrequest.address__________________________8.0\nrequest.quantity_________________________1.0\nrequest.count_value______________________NaN\nrequest.bool_value_______________________NaN\nresponse.address_________________________NaN\nresponse.quantity________________________1.0\nresponse.count_value_____________________NaN\nresponse.bool_value______________________NaN\nid.orig_h________________________185.175.0.3\n\n anomaly_score: 2.946816957116738e-10"}, {"color": "#f7fcf5", "id": "pkt_2", "label": "pkt 2", "shape": "dot", "size": 10, "title": "func___________________________READ_COILS\nevent_type______________RESPONSED_REQUEST\nrequest.address______________________14.0\nrequest.quantity______________________1.0\nrequest.count_value___________________NaN\nrequest.bool_value____________________NaN\nresponse.address______________________NaN\nresponse.quantity_____________________1.0\nresponse.count_value__________________NaN\nresponse.bool_value___________________NaN\nid.orig_h_____________________185.175.0.3\n\n anomaly_score: 5.768014954554701e-10"}, {"color": "#f7fcf5", "id": "pkt_3", "label": "pkt 3", "shape": "dot", "size": 10, "title": "func___________________________READ_COILS\nevent_type______________RESPONSED_REQUEST\nrequest.address______________________13.0\nrequest.quantity______________________1.0\nrequest.count_value___________________NaN\nrequest.bool_value____________________NaN\nresponse.address______________________NaN\nresponse.quantity_____________________1.0\nresponse.count_value__________________NaN\nresponse.bool_value___________________NaN\nid.orig_h_____________________185.175.0.3\n\n anomaly_score: 3.860634034680288e-10"}, {"color": "#f7fcf5", "id": "pkt_4", "label": "pkt 4", "shape": "dot", "size": 10, "title": "func____________________READ_DISCRETE_INPUTS\nevent_type_________________RESPONSED_REQUEST\nrequest.address__________________________8.0\nrequest.quantity_________________________1.0\nrequest.count_value______________________NaN\nrequest.bool_value_______________________NaN\nresponse.address_________________________NaN\nresponse.quantity________________________1.0\nresponse.count_value_____________________NaN\nresponse.bool_value______________________NaN\nid.orig_h________________________185.175.0.3\n\n anomaly_score: 2.5840012352063013e-09"}, {"color": "#f7fcf5", "id": "pkt_5", "label": "pkt 5", "shape": "dot", "size": 10, "title": "func____________________READ_HOLDING_REGISTERS\nevent_type___________________RESPONSED_REQUEST\nrequest.address___________________________35.0\nrequest.quantity___________________________1.0\nrequest.count_value________________________NaN\nrequest.bool_value_________________________NaN\nresponse.address___________________________NaN\nresponse.quantity__________________________1.0\nresponse.count_value_______________________NaN\nresponse.bool_value________________________NaN\nid.orig_h__________________________185.175.0.3\n\n anomaly_score: 1.5228848182502475e-09"}, {"color": "#f7fcf5", "id": "pkt_6", "label": "pkt 6", "shape": "dot", "size": 10, "title": "func____________________READ_INPUT_REGISTERS\nevent_type_________________RESPONSED_REQUEST\nrequest.address__________________________5.0\nrequest.quantity_________________________1.0\nrequest.count_value______________________NaN\nrequest.bool_value_______________________NaN\nresponse.address_________________________NaN\nresponse.quantity________________________1.0\nresponse.count_value_____________________NaN\nresponse.bool_value______________________NaN\nid.orig_h________________________185.175.0.3\n\n anomaly_score: 1.6867304220014034e-09"}, {"color": "#f7fcf5", "id": "pkt_7", "label": "pkt 7", "shape": "dot", "size": 10, "title": "func___________________________READ_COILS\nevent_type______________RESPONSED_REQUEST\nrequest.address______________________25.0\nrequest.quantity______________________1.0\nrequest.count_value___________________NaN\nrequest.bool_value____________________NaN\nresponse.address______________________NaN\nresponse.quantity_____________________1.0\nresponse.count_value__________________NaN\nresponse.bool_value___________________NaN\nid.orig_h_____________________185.175.0.3\n\n anomaly_score: 3.711546348039718e-10"}, {"color": "#f7fcf5", "id": "pkt_8", "label": "pkt 8", "shape": "dot", "size": 10, "title": "func___________________________READ_COILS\nevent_type______________RESPONSED_REQUEST\nrequest.address______________________15.0\nrequest.quantity______________________1.0\nrequest.count_value___________________NaN\nrequest.bool_value____________________NaN\nresponse.address______________________NaN\nresponse.quantity_____________________1.0\nresponse.count_value__________________NaN\nresponse.bool_value___________________NaN\nid.orig_h_____________________185.175.0.3\n\n anomaly_score: 4.98074803623183e-10"}, {"color": "#f7fcf5", "id": "pkt_9", "label": "pkt 9", "shape": "dot", "size": 10, "title": "func____________________READ_DISCRETE_INPUTS\nevent_type_________________RESPONSED_REQUEST\nrequest.address__________________________5.0\nrequest.quantity_________________________1.0\nrequest.count_value______________________NaN\nrequest.bool_value_______________________NaN\nresponse.address_________________________NaN\nresponse.quantity________________________1.0\nresponse.count_value_____________________NaN\nresponse.bool_value______________________NaN\nid.orig_h________________________185.175.0.3\n\n anomaly_score: 3.1067781680604867e-09"}, {"color": "#fff5f0", "id": "pkt_10", "label": "pkt 10", "shape": "dot", "size": 10, "title": "func_________________________READ_COILS\nevent_type______________EXPIRED_REQUEST\nrequest.address____________________13.0\nrequest.quantity____________________1.0\nrequest.count_value_________________NaN\nrequest.bool_value__________________NaN\nresponse.address____________________NaN\nresponse.quantity___________________NaN\nresponse.count_value________________NaN\nresponse.bool_value_________________NaN\nid.orig_h___________________185.175.0.7\n\n anomaly_score: 7.57791567593813e-05"}, {"color": "#f7fcf5", "id": "pkt_11", "label": "pkt 11", "shape": "dot", "size": 10, "title": "func____________________WRITE_SINGLE_COIL\nevent_type______________RESPONSED_REQUEST\nrequest.address______________________14.0\nrequest.quantity______________________1.0\nrequest.count_value___________________NaN\nrequest.bool_value___________________True\nresponse.address_____________________14.0\nresponse.quantity_____________________1.0\nresponse.count_value__________________NaN\nresponse.bool_value__________________True\nid.orig_h_____________________185.175.0.3\n\n anomaly_score: 6.254484485879175e-09"}, {"color": "#fff5f0", "id": "pkt_12", "label": "pkt 12", "shape": "dot", "size": 10, "title": "func____________________WRITE_SINGLE_REGISTER\nevent_type__________________RESPONSED_REQUEST\nrequest.address___________________________8.0\nrequest.quantity__________________________1.0\nrequest.count_value_______________________7.0\nrequest.bool_value________________________NaN\nresponse.address__________________________8.0\nresponse.quantity_________________________1.0\nresponse.count_value______________________7.0\nresponse.bool_value_______________________NaN\nid.orig_h_________________________185.175.0.3\n\n anomaly_score: 3.691206629241606e-08"}, {"color": "#ce1b1e", "id": "pkt_13", "label": "pkt 13", "shape": "dot", "size": 10, "title": "func____________________READ_HOLDING_REGISTERS\nevent_type_____________________EXPIRED_REQUEST\nrequest.address____________________________8.0\nrequest.quantity___________________________2.0\nrequest.count_value________________________NaN\nrequest.bool_value_________________________NaN\nresponse.address___________________________NaN\nresponse.quantity__________________________NaN\nresponse.count_value_______________________NaN\nresponse.bool_value________________________NaN\nid.orig_h__________________________185.175.0.7\n\n anomaly_score: 0.9523810148239136"}, {"color": "#fff5f0", "id": "pkt_14", "label": "pkt 14", "shape": "dot", "size": 10, "title": "func____________________READ_INPUT_REGISTERS\nevent_type___________________EXPIRED_REQUEST\nrequest.address__________________________8.0\nrequest.quantity_________________________1.0\nrequest.count_value______________________NaN\nrequest.bool_value_______________________NaN\nresponse.address_________________________NaN\nresponse.quantity________________________NaN\nresponse.count_value_____________________NaN\nresponse.bool_value______________________NaN\nid.orig_h________________________185.175.0.7\n\n anomaly_score: 5.568123242483125e-07"}, {"color": "#fc9575", "id": "pkt_15", "label": "pkt 15", "shape": "dot", "size": 10, "title": "func____________________WRITE_SINGLE_COIL\nevent_type________________EXPIRED_REQUEST\nrequest.address_______________________0.0\nrequest.quantity______________________1.0\nrequest.count_value___________________NaN\nrequest.bool_value___________________True\nresponse.address______________________NaN\nresponse.quantity_____________________NaN\nresponse.count_value__________________NaN\nresponse.bool_value___________________NaN\nid.orig_h_____________________185.175.0.7\n\n anomaly_score: 0.4729408919811249"}, {"color": "#f7fcf5", "id": "pkt_16", "label": "pkt 16", "shape": "dot", "size": 10, "title": "func____________________WRITE_SINGLE_COIL\nevent_type______________RESPONSED_REQUEST\nrequest.address______________________15.0\nrequest.quantity______________________1.0\nrequest.count_value___________________NaN\nrequest.bool_value___________________True\nresponse.address_____________________15.0\nresponse.quantity_____________________1.0\nresponse.count_value__________________NaN\nresponse.bool_value__________________True\nid.orig_h_____________________185.175.0.3\n\n anomaly_score: 1.1432593538529545e-08"}, {"color": "#f7fcf5", "id": "pkt_17", "label": "pkt 17", "shape": "dot", "size": 10, "title": "func____________________WRITE_SINGLE_COIL\nevent_type______________RESPONSED_REQUEST\nrequest.address______________________25.0\nrequest.quantity______________________1.0\nrequest.count_value___________________NaN\nrequest.bool_value___________________True\nresponse.address_____________________25.0\nresponse.quantity_____________________1.0\nresponse.count_value__________________NaN\nresponse.bool_value__________________True\nid.orig_h_____________________185.175.0.3\n\n anomaly_score: 1.9769915482470424e-08"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "ip_4", "to": "pkt_15"}, {"arrows": "to", "from": "ip_0", "to": "pkt_0"}, {"arrows": "to", "from": "ip_0", "to": "pkt_4"}, {"arrows": "to", "from": "ip_0", "to": "pkt_9"}, {"arrows": "to", "from": "ip_0", "to": "pkt_8"}, {"arrows": "to", "from": "ip_0", "to": "pkt_7"}, {"arrows": "to", "from": "ip_0", "to": "pkt_0"}, {"arrows": "to", "from": "ip_0", "to": "pkt_5"}, {"arrows": "to", "from": "ip_0", "to": "pkt_6"}, {"arrows": "to", "from": "ip_0", "to": "pkt_4"}, {"arrows": "to", "from": "ip_0", "to": "pkt_3"}, {"arrows": "to", "from": "ip_0", "to": "pkt_3"}, {"arrows": "to", "from": "ip_0", "to": "pkt_2"}, {"arrows": "to", "from": "ip_0", "to": "pkt_2"}, {"arrows": "to", "from": "ip_0", "to": "pkt_1"}, {"arrows": "to", "from": "ip_0", "to": "pkt_1"}, {"arrows": "to", "from": "ip_4", "to": "pkt_10"}, {"arrows": "to", "from": "ip_0", "to": "pkt_11"}, {"arrows": "to", "from": "ip_0", "to": "pkt_12"}, {"arrows": "to", "from": "ip_4", "to": "pkt_13"}, {"arrows": "to", "from": "ip_4", "to": "pkt_14"}, {"arrows": "to", "from": "ip_0", "to": "pkt_16"}, {"arrows": "to", "from": "ip_0", "to": "pkt_17"}, {"arrows": "to", "from": "pkt_15", "to": "ip_3"}, {"arrows": "to", "from": "pkt_0", "to": "ip_3"}, {"arrows": "to", "from": "pkt_4", "to": "ip_1"}, {"arrows": "to", "from": "pkt_9", "to": "ip_2"}, {"arrows": "to", "from": "pkt_8", "to": "ip_2"}, {"arrows": "to", "from": "pkt_7", "to": "ip_2"}, {"arrows": "to", "from": "pkt_0", "to": "ip_1"}, {"arrows": "to", "from": "pkt_5", "to": "ip_2"}, {"arrows": "to", "from": "pkt_6", "to": "ip_2"}, {"arrows": "to", "from": "pkt_4", "to": "ip_3"}, {"arrows": "to", "from": "pkt_3", "to": "ip_1"}, {"arrows": "to", "from": "pkt_3", "to": "ip_3"}, {"arrows": "to", "from": "pkt_2", "to": "ip_1"}, {"arrows": "to", "from": "pkt_2", "to": "ip_3"}, {"arrows": "to", "from": "pkt_1", "to": "ip_1"}, {"arrows": "to", "from": "pkt_1", "to": "ip_3"}, {"arrows": "to", "from": "pkt_10", "to": "ip_3"}, {"arrows": "to", "from": "pkt_11", "to": "ip_1"}, {"arrows": "to", "from": "pkt_12", "to": "ip_1"}, {"arrows": "to", "from": "pkt_13", "to": "ip_3"}, {"arrows": "to", "from": "pkt_14", "to": "ip_3"}, {"arrows": "to", "from": "pkt_16", "to": "ip_2"}, {"arrows": "to", "from": "pkt_17", "to": "ip_2"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
